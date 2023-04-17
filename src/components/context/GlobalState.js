@@ -3,8 +3,6 @@ import AppReducer from "./AppReducer";
 
 // initial state
 const initialState = {
-  readingClient: null,
-  sendingClient: null,
   address: null,
   connect: false,
   web3: null,
@@ -33,19 +31,9 @@ export const GlobalProvider = (props) => {
     dispatch({ type: "UPDATE_ADDRESS", payload: _address });
   };
 
-  const updateSendingClient = (_sendingClient) => {
-    dispatch({ type: "UPDATE_SENDING_CLIENT", payload: _sendingClient });
-  };
-
-  const updateReadingClient = (_readingClient) => {
-    dispatch({ type: "UPDATE_READING_CLIENT", payload: _readingClient });
-  };
-
   return (
     <GlobalContext.Provider
       value={{
-        readingClient: state.readingClient,
-        sendingClient: state.sendingClient,
         address: state.address,
         connect: state.connect,
         web3: state.web3,
@@ -53,8 +41,6 @@ export const GlobalProvider = (props) => {
         updateWeb3,
         updateConnect,
         updateAddress,
-        updateReadingClient,
-        updateSendingClient,
         updateBalance
       }}
     >

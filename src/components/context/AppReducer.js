@@ -20,15 +20,5 @@ export default (state, action) => {
         ...state,
         address: action.payload,
       };
-    case "UPDATE_READING_CLIENT":
-      return {
-        ...state,
-        readingClient: action.payload,
-      };
-    case "UPDATE_SENDING_CLIENT":
-      return {
-        ...state,
-        sendingClient: action.payload,
-      };
   }
 };

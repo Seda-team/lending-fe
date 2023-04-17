@@ -3,6 +3,7 @@ import { Button, Box, Typography, Paper } from '@mui/material'
 import { GlobalContext } from '../../context/GlobalState'
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
+import { sepolia_rpc } from '../constant/constant';
 import Web3 from "web3"
 
 const Connect = () => {
@@ -19,9 +20,8 @@ const Connect = () => {
 
   useEffect(() => {
     if (window.ethereum) {
-      const web3 = new Web3(window.ethereum);
+      const web3 = new Web3(sepolia_rpc);
       updateWeb3(web3)
-
       // Listen update account
       window.ethereum.on('accountsChanged', (accounts) => {
         if (accounts.length === 0) {
@@ -29,6 +29,10 @@ const Connect = () => {
           updateConnect(false)
         } else {
           updateAddress(accounts[0]);
+          web3.eth.getBalance(accounts[0])
+            .then((balance) => {
+              console.log(web3.utils.fromWei(balance, 'ether'))
+            })
         }
       });
     } else {
@@ -39,9 +43,12 @@ const Connect = () => {
   const handleConnect = async () => {
     if(web3) {
       await window.ethereum.request({ method: 'eth_requestAccounts' })
-      .then((accounts) => {
+      .then(async (accounts) => {
         const account = accounts[0];
         updateAddress(account)
+        const balanceInWei = await web3.eth.getBalance(account);
+        const balanceInEther = web3.utils.fromWei(balanceInWei, 'ether');
+        console.log(balanceInEther)
       }).catch((error) => {
         console.log(error);
       });

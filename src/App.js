@@ -7,20 +7,20 @@ import History from "./components/History";
 import Dashboard from "./components/DashBoard";
 import { GlobalContext } from "./components/context/GlobalState";
 import Web3 from "web3"
-require('dotenv').config()
+import { sepolia_rpc } from "./components/shared/constant/constant";
 
 
 function Main() {
-  const {web3, updateWeb3} = useContext(GlobalContext)
+  const {updateWeb3} = useContext(GlobalContext)
 
   useEffect(() => {
-    if (window.ethereum) {
-      const web3 = new Web3(window.ethereum);
+    try {
+      const web3 = new Web3(sepolia_rpc);
       updateWeb3(web3)
-    } else {
+    } catch(err) {
       console.log('MetaMask is not installed');
     }
-  })
+  }, [])
 
   const [curNav, setCurNav] = useState("DEPOSIT");
   const handleChangeNav = (nav) => {
