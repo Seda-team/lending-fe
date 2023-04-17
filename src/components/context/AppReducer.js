@@ -20,5 +20,10 @@ export default (state, action) => {
         ...state,
         address: action.payload,
       };
+    case "UPDATE_USDT_CONTRACT":
+      return {
+        ...state,
+        usdt_contract: action.payload
+      }
   }
 };

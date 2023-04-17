@@ -1,5 +1,7 @@
-const sepolia_rpc = "https://rpc.sepolia.org"
+const SEPOLIA_RPC = "https://rpc.sepolia.org"
+const USDT_CONTRACT_ADDRESS = "0xf561df10e12fEB4a879d6844E25c0d084C115838"
 
 module.exports = {
-  sepolia_rpc
+  SEPOLIA_RPC,
+  USDT_CONTRACT_ADDRESS
 }

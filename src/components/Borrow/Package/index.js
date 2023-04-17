@@ -24,7 +24,7 @@ const Package = ({name, requirement, ltv, threshold}) => {
         >
           <Typography 
             variant="body2"
-            sx={{ fontSize: "17px", fontWeight: 1000 }}
+            sx={{ fontSize: "17px", fontWeight: 800 }}
             mr={1}>
             {name}
           </Typography>
@@ -32,7 +32,7 @@ const Package = ({name, requirement, ltv, threshold}) => {
             <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
               <Typography
                 variant="body2"
-                sx={{ fontSize: "20px", fontWeight: 1000, color: "#265D97" }}
+                sx={{ fontSize: "20px", fontWeight: 800, color: "#265D97" }}
                 mr={1}>
                 LTV
               </Typography>
@@ -46,7 +46,7 @@ const Package = ({name, requirement, ltv, threshold}) => {
             <Box ox sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
               <Typography
                 variant="body2"
-                sx={{ fontSize: "20px", fontWeight: 1000, color: "#265D97" }}
+                sx={{ fontSize: "20px", fontWeight: 800, color: "#265D97" }}
                 mr={1}>
                 LT
               </Typography>

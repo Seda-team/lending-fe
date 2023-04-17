@@ -50,7 +50,7 @@ const History = () => {
                 <Grid item xs={2}>
                   <Typography  
                   variant="body2"
-                  sx={{ fontSize: "17px", fontWeight: 1000, color: "#265D97"}}
+                  sx={{ fontSize: "17px", fontWeight: 800, color: "#265D97"}}
                   textAlign={"center"}
                   >
                     Package Type
@@ -59,7 +59,7 @@ const History = () => {
                 <Grid item xs={2}>
                   <Typography  
                   variant="body2"
-                  sx={{ fontSize: "17px", fontWeight: 1000, color: "#265D97"}}
+                  sx={{ fontSize: "17px", fontWeight: 800, color: "#265D97"}}
                   textAlign={"center"}
                   >
                     Date
@@ -68,7 +68,7 @@ const History = () => {
                 <Grid item xs={2}>
                   <Typography  
                   variant="body2"
-                  sx={{ fontSize: "17px", fontWeight: 1000, color: "#265D97"}}
+                  sx={{ fontSize: "17px", fontWeight: 800, color: "#265D97"}}
                   textAlign={"center"}
                   >
                     LTV
@@ -77,7 +77,7 @@ const History = () => {
                 <Grid item xs={2}>
                   <Typography  
                   variant="body2"
-                  sx={{ fontSize: "17px", fontWeight: 1000, color: "#265D97"}}
+                  sx={{ fontSize: "17px", fontWeight: 800, color: "#265D97"}}
                   textAlign={"center"}
                   >
                     LT
@@ -86,7 +86,7 @@ const History = () => {
                 <Grid item xs={2}>
                   <Typography  
                   variant="body2"
-                  sx={{ fontSize: "17px", fontWeight: 1000, color: "#265D97"}}
+                  sx={{ fontSize: "17px", fontWeight: 800, color: "#265D97"}}
                   textAlign={"center"}
                   >
                     Amount
@@ -96,7 +96,7 @@ const History = () => {
               <HistoryRow type={"Default Package"} date={"15/04/2023"} ltv={60} lt={110} amount={100}/>
               <HistoryRow type={"Default Package"} date={"15/04/2023"} ltv={60} lt={110} amount={500}/>
               <HistoryRow type={"Package 1"} date={"10/04/2023"} ltv={70} lt={120} amount={200}/>
-              <HistoryRow type={"Package 2"} date={"05/04/2023"} ltv={80} lt={125} amount={1000}/>
+              <HistoryRow type={"Package 2"} date={"05/04/2023"} ltv={80} lt={125} amount={800}/>
             </Paper>
           </Paper>
         </Box>

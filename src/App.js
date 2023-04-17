@@ -7,16 +7,23 @@ import History from "./components/History";
 import Dashboard from "./components/DashBoard";
 import { GlobalContext } from "./components/context/GlobalState";
 import Web3 from "web3"
-import { sepolia_rpc } from "./components/shared/constant/constant";
+import { SEPOLIA_RPC, USDT_CONTRACT_ADDRESS } from './components/shared/constant/constant';
+import { createContract } from './components/shared/utils/contract';
+import StableToken from "./abi/StableToken.json"
 
 
 function Main() {
-  const {updateWeb3} = useContext(GlobalContext)
+  const {updateWeb3, updateUsdtContract} = useContext(GlobalContext)
 
   useEffect(() => {
     try {
-      const web3 = new Web3(sepolia_rpc);
+      const web3 = new Web3(SEPOLIA_RPC);
       updateWeb3(web3)
+      // Update usdt contract
+      createContract(web3, StableToken.abi, USDT_CONTRACT_ADDRESS)
+        .then((contract) => {
+          updateUsdtContract(contract)
+        })
     } catch(err) {
       console.log('MetaMask is not installed');
     }
@@ -43,7 +50,7 @@ function Main() {
       >
         <Typography
           variant="h2"
-          sx={{ color: "#fff", fontsize: "80px", fontWeight: 1000 }}
+          sx={{ color: "#fff", fontsize: "80px", fontWeight: 800 }}
         >
           SeDa Lending
         </Typography>
@@ -76,7 +83,7 @@ function Main() {
                     width: "200px",
                     border: "1px solid #fff",
                     fontSize: "20px",
-                    fontWeight: 1000,
+                    fontWeight: 800,
                     "&:hover": {
                       background: "#265D97",
                       color: "#fff",
@@ -88,7 +95,7 @@ function Main() {
                     width: "200px",
                     border: "1px solid #fff",
                     fontSize: "20px",
-                    fontWeight: 1000,
+                    fontWeight: 800,
                     color: "#265D97",
                     "&:hover": {
                       background: "#265D97",
@@ -111,7 +118,7 @@ function Main() {
                     width: "200px",
                     border: "1px solid #fff",
                     fontSize: "20px",
-                    fontWeight: 1000,
+                    fontWeight: 800,
                     "&:hover": {
                       background: "#265D97",
                       color: "#fff",
@@ -123,7 +130,7 @@ function Main() {
                     width: "200px",
                     border: "1px solid #fff",
                     fontSize: "20px",
-                    fontWeight: 1000,
+                    fontWeight: 800,
                     color: "#265D97",
                     "&:hover": {
                       background: "#265D97",
@@ -146,7 +153,7 @@ function Main() {
                     width: "200px",
                     border: "1px solid #fff",
                     fontSize: "20px",
-                    fontWeight: 1000,
+                    fontWeight: 800,
                     "&:hover": {
                       background: "#265D97",
                       color: "#fff",
@@ -158,7 +165,7 @@ function Main() {
                     width: "200px",
                     border: "1px solid #fff",
                     fontSize: "20px",
-                    fontWeight: 1000,
+                    fontWeight: 800,
                     color: "#265D97",
                     "&:hover": {
                       background: "#265D97",

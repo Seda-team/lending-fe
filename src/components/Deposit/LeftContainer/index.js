@@ -1,7 +1,25 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Box, Paper, Typography, Button } from "@mui/material";
+import { GlobalContext } from "../../context/GlobalState";
+import BigNumber from "bignumber.js"
 
 const LeftContainer = () => {
+  const {balance} = useContext(GlobalContext)
+  const [curBalance, setCurBalance] = useState({
+    "ether": 0,
+    "usdt": 0
+  })
+  const [refresh, setRefresh] = useState(false)
+
+  useEffect(() => {
+    if(balance != undefined) {
+      console.log(balance)
+      setCurBalance(balance)
+      setRefresh(!refresh)
+    }
+      
+  }, [balance])
+
   return (
     <Box mb={5}>
       <Paper
@@ -44,7 +62,7 @@ const LeftContainer = () => {
             ETH
           </Typography>
           <Typography variant="h5" sx={{ fontWeight: "800", fontSize: "40px", color: "#265D97" }} mr={1}>
-            0
+            {BigNumber(curBalance.ether).toFixed(2)}
           </Typography>
         </Paper>
         <Paper
@@ -69,7 +87,7 @@ const LeftContainer = () => {
             USDT
           </Typography>
           <Typography variant="h5" sx={{ fontWeight: "800", fontSize: "40px" }} mr={1}>
-            0
+          {BigNumber(curBalance.usdt).toFixed(2)}
           </Typography>
         </Paper>
         </Box>

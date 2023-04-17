@@ -8,7 +8,7 @@ const HistoryRow = ({type, date, ltv, lt, amount}) => {
         <Grid item xs={2} sx={{display: "flex", justifyContent: "center", alignItems: "center"}}>
           <Typography  
             variant="body2"
-            sx={{ fontSize: "15px", fontWeight: 1000}}
+            sx={{ fontSize: "15px", fontWeight: 800}}
             textAlign={"center"}
           >
            {type}
@@ -17,7 +17,7 @@ const HistoryRow = ({type, date, ltv, lt, amount}) => {
         <Grid item xs={2} sx={{display: "flex", justifyContent: "center", alignItems: "center"}}>
           <Typography  
             variant="body2"
-            sx={{ fontSize: "15px", fontWeight: 1000}}
+            sx={{ fontSize: "15px", fontWeight: 800}}
             textAlign={"center"}
           >
             {date}
@@ -26,7 +26,7 @@ const HistoryRow = ({type, date, ltv, lt, amount}) => {
         <Grid item xs={2} sx={{display: "flex", justifyContent: "center", alignItems: "center"}}>
           <Typography  
             variant="body2"
-            sx={{ fontSize: "15px", fontWeight: 1000}}
+            sx={{ fontSize: "15px", fontWeight: 800}}
             textAlign={"center"}
           >
             {ltv}
@@ -35,7 +35,7 @@ const HistoryRow = ({type, date, ltv, lt, amount}) => {
         <Grid item xs={2} sx={{display: "flex", justifyContent: "center", alignItems: "center"}}>
           <Typography  
             variant="body2"
-            sx={{ fontSize: "15px", fontWeight: 1000}}
+            sx={{ fontSize: "15px", fontWeight: 800}}
             textAlign={"center"}
         >
             {lt}
@@ -44,7 +44,7 @@ const HistoryRow = ({type, date, ltv, lt, amount}) => {
         <Grid item xs={2} sx={{display: "flex", justifyContent: "center", alignItems: "center"}}>
           <Typography  
             variant="body2"
-            sx={{ fontSize: "15px", fontWeight: 1000}}
+            sx={{ fontSize: "15px", fontWeight: 800}}
             textAlign={"center"}
           >
             {amount} USDT

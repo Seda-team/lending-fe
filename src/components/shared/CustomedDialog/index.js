@@ -56,7 +56,7 @@ const CustomedDialog = ({open, handleClose, title, info, requirement}) => {
     }}
   >
     <DialogTitle sx={{ textAlign: "center" }} mt={3}>
-        <Typography variant="h4" sx={{fontSize: "20px", fontWeight: 1000}}>{title}</Typography>
+        <Typography variant="h4" sx={{fontSize: "20px", fontWeight: 800}}>{title}</Typography>
       </DialogTitle>
       <CloseIcon
         sx={{ position: "absolute", top: "20px", right: "20px" }}

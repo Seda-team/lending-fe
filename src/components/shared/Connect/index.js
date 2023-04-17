@@ -3,12 +3,15 @@ import { Button, Box, Typography, Paper } from '@mui/material'
 import { GlobalContext } from '../../context/GlobalState'
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-import { sepolia_rpc } from '../constant/constant';
+import { SEPOLIA_RPC, USDT_CONTRACT_ADDRESS } from '../constant/constant';
+import { createContract } from '../utils/contract';
+import StableToken from "../../../abi/StableToken.json"
 import Web3 from "web3"
 
 const Connect = () => {
-  const {updateConnect, connect, updateAddress, address, updateWeb3, web3} = useContext(GlobalContext)
+  const {updateConnect, connect, updateAddress, address, updateWeb3, web3, balance, updateBalance, usdtContract, updateUsdtContract} = useContext(GlobalContext)
   const [open, setOpen] = useState(false)
+  const [curContract, setCurContract] = useState(null)
 
   const handleOpen = () => {
     setOpen(true)
@@ -20,19 +23,39 @@ const Connect = () => {
 
   useEffect(() => {
     if (window.ethereum) {
-      const web3 = new Web3(sepolia_rpc);
+      const web3 = new Web3(SEPOLIA_RPC);
       updateWeb3(web3)
+
+      createContract(web3, StableToken.abi, USDT_CONTRACT_ADDRESS)
+        .then((contract) => {
+          updateUsdtContract(contract)
+          setCurContract(contract)
+        })
+      
       // Listen update account
       window.ethereum.on('accountsChanged', (accounts) => {
         if (accounts.length === 0) {
           updateAddress(null);
           updateConnect(false)
+
         } else {
           updateAddress(accounts[0]);
+          // Update ether balance 
+          let newBalance = balance
           web3.eth.getBalance(accounts[0])
-            .then((balance) => {
-              console.log(web3.utils.fromWei(balance, 'ether'))
+            .then((_balance) => { 
+              newBalance.ether = web3.utils.fromWei(_balance, 'ether')
             })
+          let contract = curContract ? curContract : usdtContract
+          // Update USDT balance
+          contract.methods.balanceOf(address).call()
+          .then((receipt) => {
+            newBalance.usdt = receipt
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+          updateBalance(newBalance)
         }
       });
     } else {
@@ -43,12 +66,23 @@ const Connect = () => {
   const handleConnect = async () => {
     if(web3) {
       await window.ethereum.request({ method: 'eth_requestAccounts' })
-      .then(async (accounts) => {
-        const account = accounts[0];
-        updateAddress(account)
-        const balanceInWei = await web3.eth.getBalance(account);
-        const balanceInEther = web3.utils.fromWei(balanceInWei, 'ether');
-        console.log(balanceInEther)
+        .then(async (accounts) => {
+          const account = accounts[0];
+          updateAddress(account)
+          // Update ETH balance
+          let newBalance = balance
+          await web3.eth.getBalance(account)
+            .then((_balance) => {
+              newBalance.ether = web3.utils.fromWei(_balance, 'ether')
+            })
+
+          // Update USDT balance
+          let contract = usdtContract ? usdtContract : curContract
+          await contract.methods.balanceOf(account).call()
+            .then((receipt) => {
+              newBalance.usdt = receipt
+            })
+          updateBalance(newBalance)
       }).catch((error) => {
         console.log(error);
       });

@@ -12,7 +12,7 @@ const InformationRow = ({title, value, bold}) => {
         marginTop: "20px",
         }}
     >
-      <Typography sx={bold ? { fontSize: "15px", fontWeight: 1000 } : { fontSize: "15px", fontWeight: 500 }} mr={1}>
+      <Typography sx={bold ? { fontSize: "15px", fontWeight: 800 } : { fontSize: "15px", fontWeight: 500 }} mr={1}>
         {title}
       </Typography>
     <Typography sx={{ fontSize: "15px" }}>{value}</Typography>

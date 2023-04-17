@@ -94,7 +94,6 @@ const Dashboard = () => {
                         <Typography ml={1} sx={{color: "black", fontSize: "15px"}}>Total Deposit</Typography>
                     </Box>
                     <Typography sx={{color: "black", fontWeight: "800", fontSize: "30px", width: "100%", textAlign: "center", marginTop: "8px"}}>1000 ETH</Typography>  
-                    <Typography sx={{color: "black", fontWeight: "800", fontSize: "30px", width: "100%", textAlign: "center", marginTop: "8px"}}>1000 USDT</Typography>  
                 </Box>
             </Paper>
             <Paper
@@ -116,7 +115,6 @@ const Dashboard = () => {
                         <FiberManualRecordIcon sx={{color: "black", fontSize: "20px"}}/>
                         <Typography ml={1} sx={{color: "black", fontSize: "15px"}}>Total Borrow</Typography>
                     </Box>
-                    <Typography sx={{color: "black", fontWeight: "800", fontSize: "30px", width: "100%", textAlign: "center", marginTop: "8px"}}>2000 ETH</Typography>  
                     <Typography sx={{color: "black", fontWeight: "800", fontSize: "30px", width: "100%", textAlign: "center", marginTop: "8px"}}>2000 USDT</Typography>  
                 </Box>     
             </Paper>      
