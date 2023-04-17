@@ -1,12 +1,26 @@
-import { useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Box, Button, ButtonGroup, Typography } from "@mui/material";
 import Connect from "./components/shared/Connect";
 import Deposit from "./components/Deposit";
 import Borrow from "./components/Borrow";
 import History from "./components/History";
 import Dashboard from "./components/DashBoard";
+import { GlobalContext } from "./components/context/GlobalState";
+import Web3 from "web3"
+require('dotenv').config()
+
 
 function Main() {
+  const {web3, updateWeb3} = useContext(GlobalContext)
+
+  useEffect(() => {
+    if (window.ethereum) {
+      const web3 = new Web3(window.ethereum);
+      updateWeb3(web3)
+    } else {
+      console.log('MetaMask is not installed');
+    }
+  })
 
   const [curNav, setCurNav] = useState("DEPOSIT");
   const handleChangeNav = (nav) => {

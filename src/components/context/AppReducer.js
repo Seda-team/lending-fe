@@ -10,6 +10,11 @@ export default (state, action) => {
         ...state,
         connect: action.payload,
       };
+    case "UPDATE_BALANCE":
+      return {
+        ...state,
+        balance: action.balance,
+      }
     case "UPDATE_ADDRESS":
       return {
         ...state,
