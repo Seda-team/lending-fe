@@ -1,8 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box, Paper, Typography, Button } from '@mui/material'
 import CustomedDialog from '../../shared/CustomedDialog'
+import Web3 from 'web3'
+import { LENDING_CONTRACT_ADDRESS } from '../../shared/constant/constant'
+import LendingPoolV2 from "../../../abi/LendingPoolV2.json"
+import { createContract } from '../../shared/utils/contract'
 
-const Package = ({name, requirement, ltv, threshold}) => {
+const Package = ({name, requirement, ltv, threshold, packageIndex}) => {
   const [open, setOpen] = useState(false)
 
   const handleClose = () => {
@@ -99,7 +103,7 @@ const Package = ({name, requirement, ltv, threshold}) => {
           >
             Choose
           </Button>
-          <CustomedDialog open={open} handleClose={handleClose} title={name} requirement={requirement[1]}/>
+          <CustomedDialog open={open} handleClose={handleClose} title={name} requirement={requirement[1]} packageIndex={packageIndex}/>
         </Box>
         
     </Box>

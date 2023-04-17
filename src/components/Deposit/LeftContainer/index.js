@@ -2,22 +2,52 @@ import React, { useContext, useState, useEffect } from "react";
 import { Box, Paper, Typography, Button } from "@mui/material";
 import { GlobalContext } from "../../context/GlobalState";
 import BigNumber from "bignumber.js"
+import DepositDialog from "./DepositDialog";
+import Web3 from "web3";
+import LendingPoolV2 from "../../../abi/LendingPoolV2.json"
+import { LENDING_CONTRACT_ADDRESS, SEPOLIA_RPC } from "../../shared/constant/constant";
+import { createContract } from "../../shared/utils/contract";
 
 const LeftContainer = () => {
-  const {balance} = useContext(GlobalContext)
+  const {balance, web3, address} = useContext(GlobalContext)
   const [curBalance, setCurBalance] = useState({
     "ether": 0,
     "usdt": 0
   })
   const [refresh, setRefresh] = useState(false)
+  const [open, setOpen] = useState(false)
+  const [curDeposit, setCurDeposit] = useState(0)
+
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  const handleOpen = () => {
+    setOpen(true)
+  }
 
   useEffect(() => {
     if(balance != undefined) {
-      console.log(balance)
       setCurBalance(balance)
       setRefresh(!refresh)
     }
-      
+    if(address) {
+      const web3 = new Web3(SEPOLIA_RPC)
+      createContract(web3, LendingPoolV2.abi, LENDING_CONTRACT_ADDRESS)
+        .then(contract => [
+          contract.methods.supply(address).call()
+            .then(res => {
+              setCurDeposit(BigNumber(res).dividedBy(1000000000000000000).toFixed(2))
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        ])
+        .catch(err => {
+          console.log(err)
+        }) 
+      }
+    
   }, [balance])
 
   return (
@@ -26,19 +56,47 @@ const LeftContainer = () => {
         sx={{
           backgroundColor: "#E8E8E8",
           borderRadius: "15px",
-          height: "300px",
+          height: "310px",
           padding: "50px",
+          paddingTop: "40px",
           boxShadow: "0 0 10px #265D97",
         }}
         elevation={1}
       >
-        <Typography
-          variant="body2"
-          sx={{ fontWeight: "800", fontSize: "20px" }}
-          mb={1}
-        >
-          TOTAL BALANCE
-        </Typography>
+        <Box sx={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+          <Typography
+            variant="body2"
+            sx={{ fontWeight: "800", fontSize: "20px", float: "left" }}
+            mb={1}
+          >
+            TOTAL BALANCE
+          </Typography>
+          <Paper
+            sx={{
+              backgroundColor: "#F8F8F8",
+              borderRadius: "15px",
+              padding: "30px",
+              width: "50%",
+              height: "20px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+            elevation={1}
+          >
+            <Typography
+              variant="body2"
+              sx={{ fontSize: "15px", fontWeight: 800 }}
+              mr={1}
+            >
+              Deposit
+            </Typography>
+            <Typography variant="h5" sx={{ fontWeight: "800", fontSize: "40px" }} mr={1}>
+            {BigNumber(curDeposit).toFixed(2)}
+            </Typography>
+          </Paper>
+        </Box>
+        
         <Box sx={{display: "flex", justifyContent: "space-around"}} mb={4} mt={3}>
           <Paper
           sx={{
@@ -104,6 +162,7 @@ const LeftContainer = () => {
               fontWeight: "800",
               marginRight: "20px",
             }}
+            onClick = {() => handleOpen()}
           >
             Deposit
           </Button>
@@ -121,6 +180,7 @@ const LeftContainer = () => {
           >
             Withdraw
           </Button>
+          <DepositDialog open={open} handleClose={handleClose} title={"Deposit"} requirement={""}/>
         </Box>
       </Paper>
     </Box>

@@ -1,12 +1,45 @@
-import React, {useContext, useEffect} from "react"
+import React, {useState, useContext, useEffect} from "react"
 import { Container, Box, Paper, Typography } from "@mui/material";
 import Highcharts from "highcharts/highstock";
 import PieChart from "highcharts-react-official";
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import LendingPoolV2 from "../../abi/LendingPoolV2.json"
+import { LENDING_CONTRACT_ADDRESS, SEPOLIA_RPC } from "../shared/constant/constant";
+import Web3 from "web3";
+import BigNumber from "bignumber.js"
+import { createContract } from "../shared/utils/contract";
 
 const Dashboard = () => {
-  const totalDeposit = 1000
-  const totalBorrow = 2000
+  const [totalDeposit, setTotalDeposit] = useState(0)
+  const [totalBorrow, setTotalBorrow] = useState(0)
+  const [contract, setContract] = useState(null)
+
+  useEffect(() => {
+    const web3 = new Web3(SEPOLIA_RPC)
+    createContract(web3, LendingPoolV2.abi, LENDING_CONTRACT_ADDRESS)
+        .then(contract => {
+            setContract(contract)
+            contract.methods.totalDeposits().call()
+                .then(res => {
+                    setTotalDeposit(BigNumber(res).dividedBy(1000000000000000000).toFixed(2))
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+
+            contract.methods.totalBorrows().call()
+                .then(res => {
+                    setTotalBorrow(BigNumber(res).dividedBy(1000000000000000000).toFixed(2))
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        })
+        .catch(err => {
+            console.log(err)
+        })
+  }, [])
+  
   
   return (
     <Box sx={{paddingTop: "20px"}}>
@@ -14,7 +47,7 @@ const Dashboard = () => {
         <Paper
             sx={{
             width: "70%",
-            height: "170px",
+            height: "120px",
             backgroundColor: "#E8E8E8",
             borderRadius: "15px",
             boxShadow: "0 0 10px #265D97",
@@ -80,7 +113,7 @@ const Dashboard = () => {
                 borderRadius: "15px",
                 padding: "10px",
                 width: "250px",
-                height: "120px",
+                height: "70px",
                 display: "flex",
                 margin: "auto 0",
                 flexDirection: "column",
@@ -93,7 +126,7 @@ const Dashboard = () => {
                         <FiberManualRecordIcon sx={{color: "#265D97", fontSize: "20px"}}/>
                         <Typography ml={1} sx={{color: "black", fontSize: "15px"}}>Total Deposit</Typography>
                     </Box>
-                    <Typography sx={{color: "black", fontWeight: "800", fontSize: "30px", width: "100%", textAlign: "center", marginTop: "8px"}}>1000 ETH</Typography>  
+                    <Typography sx={{color: "black", fontWeight: "800", fontSize: "30px", width: "100%", textAlign: "center", marginTop: "8px"}}>{BigNumber(totalDeposit).toFixed(2)} ETH</Typography>  
                 </Box>
             </Paper>
             <Paper
@@ -102,7 +135,7 @@ const Dashboard = () => {
                 borderRadius: "15px",
                 padding: "10px",
                 width: "250px",
-                height: "120px",
+                height: "70px",
                 display: "flex",
                 margin: "auto 0",
                 marginRight: "40px",
@@ -115,7 +148,7 @@ const Dashboard = () => {
                         <FiberManualRecordIcon sx={{color: "black", fontSize: "20px"}}/>
                         <Typography ml={1} sx={{color: "black", fontSize: "15px"}}>Total Borrow</Typography>
                     </Box>
-                    <Typography sx={{color: "black", fontWeight: "800", fontSize: "30px", width: "100%", textAlign: "center", marginTop: "8px"}}>2000 USDT</Typography>  
+                    <Typography sx={{color: "black", fontWeight: "800", fontSize: "30px", width: "100%", textAlign: "center", marginTop: "8px"}}>{BigNumber(totalBorrow).toFixed(2)} USDT</Typography>  
                 </Box>     
             </Paper>      
         </Paper>

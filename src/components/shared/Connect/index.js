@@ -3,9 +3,10 @@ import { Button, Box, Typography, Paper } from '@mui/material'
 import { GlobalContext } from '../../context/GlobalState'
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-import { SEPOLIA_RPC, USDT_CONTRACT_ADDRESS } from '../constant/constant';
+import { SEPOLIA_RPC, USDT_CONTRACT_ADDRESS, BASE_18 } from '../constant/constant';
 import { createContract } from '../utils/contract';
 import StableToken from "../../../abi/StableToken.json"
+import BigNumber from "bignumber.js"
 import Web3 from "web3"
 
 const Connect = () => {
@@ -77,10 +78,10 @@ const Connect = () => {
             })
 
           // Update USDT balance
-          let contract = usdtContract ? usdtContract : curContract
+          let contract = curContract ? curContract : usdtContract
           await contract.methods.balanceOf(account).call()
             .then((receipt) => {
-              newBalance.usdt = receipt
+              newBalance.usdt = BigNumber(receipt).dividedBy(BASE_18).toFixed()
             })
           updateBalance(newBalance)
       }).catch((error) => {

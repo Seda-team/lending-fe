@@ -39,13 +39,13 @@ const Borrow = () => {
           </Box>
           <Grid container sx={{display: "flex", justifyContent: "space-around"}}>
             <Grid item xs={3}>
-              <Package name={"Default Package"} requirement={["", ""]} ltv={60} threshold={110}/>
+              <Package name={"Default Package"} requirement={["", ""]} ltv={75} threshold={80} packageIndex={0}/>
             </Grid>
             <Grid item xs={3}>
-              <Package name={"Package 1"} requirement={["Assets", "Assets > 1M"]} ltv={70} threshold={120}/>
+              <Package name={"Package 1"} requirement={["Assets", "Assets > 1M"]} ltv={77.5} threshold={82.5} packageIndex={1}/>
             </Grid>
             <Grid item xs={3}>
-              <Package name={"Package 2"} requirement={["Liquidate", "Liquidate < 3"]} ltv={80} threshold={125}/>
+              <Package name={"Package 2"} requirement={["Liquidate", "Liquidate < 3"]} ltv={80} threshold={85} packageIndex={2}/>
             </Grid>
           </Grid>
          
