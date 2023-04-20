@@ -23,6 +23,7 @@ const Package = ({name, requirement, ltv, threshold, packageIndex}) => {
             backgroundColor: "white",
             borderRadius: "15px",
             padding: "30px",
+            height: "180px"
           }}
           elevation={1}
         >
@@ -78,12 +79,25 @@ const Package = ({name, requirement, ltv, threshold, packageIndex}) => {
                 mr={1}>
                 Requirement: 
               </Typography>
-              <Typography
-                variant="body2"
-                sx={{ fontSize: "10x", fontWeight: 500 }}
-                mr={1}>
-                {requirement[1]}
-              </Typography>
+
+              <Box>
+                {requirement.length > 0 ?<Box> {requirement.map(data => (
+                  <Typography
+                    variant="body2"
+                    sx={{ fontSize: "10x", fontWeight: 500 }}
+                    mr={1}>
+                    {data}
+                  </Typography>
+                ))} </Box> :  <Typography
+                  variant="body2"
+                  sx={{ fontSize: "10x", fontWeight: 500 }}
+                  mr={1}>
+                  No requirement
+                </Typography>}
+                
+                
+              </Box>
+              
             </Box>
             }
         </Paper>
@@ -103,7 +117,7 @@ const Package = ({name, requirement, ltv, threshold, packageIndex}) => {
           >
             Choose
           </Button>
-          <CustomedDialog open={open} handleClose={handleClose} title={name} requirement={requirement[1]} packageIndex={packageIndex}/>
+          <CustomedDialog open={open} handleClose={handleClose} title={name} requirement={requirement} packageIndex={packageIndex}/>
         </Box>
         
     </Box>

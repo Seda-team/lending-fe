@@ -10,7 +10,8 @@ const initialState = {
     "ether": 0,
     "usdt": 0
   },
-  usdt_contract: null
+  usdt_contract: null,
+  refresh: false
 };
 
 export const GlobalContext = createContext(initialState);
@@ -39,6 +40,10 @@ export const GlobalProvider = (props) => {
     dispatch({ type: "UPDATE_USDT_CONTRACT", payload: _usdt_contract})
   }
 
+  const updateRefresh = (_refresh) => {
+    dispatch({ type: "UPDATE_REFRESH", payload: _refresh})
+  }
+
   return (
     <GlobalContext.Provider
       value={{
@@ -47,11 +52,13 @@ export const GlobalProvider = (props) => {
         web3: state.web3,
         balance: state.balance,
         usdt_contract: state.usdt_contract,
+        refresh: state.refresh,
         updateWeb3,
         updateConnect,
         updateAddress,
         updateBalance,
-        updateUsdtContract
+        updateUsdtContract,
+        updateRefresh: updateRefresh
       }}
     >
       {props.children}

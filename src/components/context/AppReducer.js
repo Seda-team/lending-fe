@@ -25,5 +25,10 @@ export default (state, action) => {
         ...state,
         usdt_contract: action.payload
       }
+    case "UPDATE_REFRESH":
+      return {
+        ...state,
+        refresh: action.payload
+      }
   }
 };

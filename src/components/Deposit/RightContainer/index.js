@@ -2,11 +2,13 @@ import { Paper, Box, Typography } from "@mui/material";
 import { createContract } from "../../shared/utils/contract";
 import { SEPOLIA_RPC, PRICE_ORACLE_CONTRACT_ADDRESS } from "../../shared/constant/constant"
 import PriceConsumerV3 from "../../../abi/PriceConsumerV3.json"
-import React, {useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import Web3 from "web3";
 import BigNumber from "bignumber.js"
+import { GlobalContext } from "../../context/GlobalState";
 
 const RightContainer = () => {
+  const {refresh} = useContext(GlobalContext)
   const [price, setPrice] = useState(0)
   useEffect(() => {
     if (window.ethereum) {
@@ -25,7 +27,7 @@ const RightContainer = () => {
           console.error(err);
         });
     }
-  }, [])
+  }, [refresh])
   return (
       <Box sx={{marginLeft: "50px"}}>
         <Paper

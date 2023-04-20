@@ -20,7 +20,7 @@ import BigNumber from "bignumber.js"
 import Web3 from 'web3';
 
 const DepositDialog = ({open, handleClose, title, info, requirement}) => {
-  const {balance, web3, address} = useContext(GlobalContext)
+  const {balance, web3, address, updateRefresh, refresh} = useContext(GlobalContext)
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState("0");
   const [openDone, setOpenDone] = useState(false);
@@ -39,10 +39,10 @@ const DepositDialog = ({open, handleClose, title, info, requirement}) => {
   }, [])
 
   const deposit = async ( ) => {
-    setLoading(true)
+    setLoading(true) 
     const web3 = new Web3(window.ethereum)
     try {
-      curLendingContract.methods.deposit(web3.utils.toWei(value)).send({from: address, value: web3.utils.toWei(value)})
+      await curLendingContract.methods.deposit(web3.utils.toWei(value)).send({from: address, value: web3.utils.toWei(value)})
         .then(res => {
           console.log(res)
         })
@@ -52,13 +52,14 @@ const DepositDialog = ({open, handleClose, title, info, requirement}) => {
     } catch (err) {
       console.log(err)
     }
+    updateRefresh(!refresh)
     setLoading(false)
   }
 
   const handleOpenDone = async () => {
-    setOpenDone(true)
-    setLoading(true) 
+    setLoading(true)
     await deposit()
+    setOpenDone(true)
     setLoading(false)
   }
 
@@ -136,7 +137,7 @@ const DepositDialog = ({open, handleClose, title, info, requirement}) => {
           {loading ? <RestartAltIcon /> : "Proceed"}
         </Button>
       </DialogContent>
-      <DoneDialog open={openDone} handleClose={handleCloseDone} info={[["Deposit", value], ["Transaction Fee", "0.0005 USDT"]]}/>
+      {loading ? "" : <DoneDialog open={openDone} handleClose={handleCloseDone} info={[["Deposit", value], ["Transaction Fee", "0.0005 USDT"]]}/>}
   </Dialog>  
   )
 }

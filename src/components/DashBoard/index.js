@@ -4,14 +4,18 @@ import Highcharts from "highcharts/highstock";
 import PieChart from "highcharts-react-official";
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import LendingPoolV2 from "../../abi/LendingPoolV2.json"
-import { LENDING_CONTRACT_ADDRESS, SEPOLIA_RPC } from "../shared/constant/constant";
+import PriceConsumerV3 from "../../abi/PriceConsumerV3.json"
+import { LENDING_CONTRACT_ADDRESS, SEPOLIA_RPC, PRICE_ORACLE_CONTRACT_ADDRESS } from "../shared/constant/constant";
 import Web3 from "web3";
 import BigNumber from "bignumber.js"
 import { createContract } from "../shared/utils/contract";
+import { GlobalContext } from "../context/GlobalState";
 
 const Dashboard = () => {
+  const {refresh} = useContext(GlobalContext)
   const [totalDeposit, setTotalDeposit] = useState(0)
   const [totalBorrow, setTotalBorrow] = useState(0)
+  const [price, setPrice] = useState(0)
   const [contract, setContract] = useState(null)
 
   useEffect(() => {
@@ -21,7 +25,7 @@ const Dashboard = () => {
             setContract(contract)
             contract.methods.totalDeposits().call()
                 .then(res => {
-                    setTotalDeposit(BigNumber(res).dividedBy(1000000000000000000).toFixed(2))
+                    setTotalDeposit(BigNumber(res).dividedBy(1000000000000000000).toNumber())
                 })
                 .catch(err => {
                     console.log(err)
@@ -29,7 +33,7 @@ const Dashboard = () => {
 
             contract.methods.totalBorrows().call()
                 .then(res => {
-                    setTotalBorrow(BigNumber(res).dividedBy(1000000000000000000).toFixed(2))
+                    setTotalBorrow(BigNumber(res).dividedBy(1000000000000000000).toNumber())
                 })
                 .catch(err => {
                     console.log(err)
@@ -38,8 +42,20 @@ const Dashboard = () => {
         .catch(err => {
             console.log(err)
         })
-  }, [])
-  
+    createContract(web3, PriceConsumerV3.abi, PRICE_ORACLE_CONTRACT_ADDRESS)
+        .then(contract => {
+          contract.methods.getLatestPrice().call()
+            .then(price => {
+              setPrice(BigNumber(price).dividedBy(100000000).toNumber())
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+  }, [refresh])
   
   return (
     <Box sx={{paddingTop: "20px"}}>
@@ -97,7 +113,7 @@ const Dashboard = () => {
         data: [{
             name: 'Total Deposit',
             color: "#265D97",
-            y: totalDeposit
+            y: totalDeposit*price
         }, {
             name: 'Total Borrow',
             y: totalBorrow

@@ -5,16 +5,16 @@ import BigNumber from "bignumber.js"
 import DepositDialog from "./DepositDialog";
 import Web3 from "web3";
 import LendingPoolV2 from "../../../abi/LendingPoolV2.json"
-import { LENDING_CONTRACT_ADDRESS, SEPOLIA_RPC } from "../../shared/constant/constant";
+import StableToken from "../../../abi/StableToken.json"
+import { LENDING_CONTRACT_ADDRESS, SEPOLIA_RPC, BASE_18, USDT_CONTRACT_ADDRESS } from "../../shared/constant/constant";
 import { createContract } from "../../shared/utils/contract";
 
 const LeftContainer = () => {
-  const {balance, web3, address} = useContext(GlobalContext)
+  const {balance, web3, address, refresh} = useContext(GlobalContext)
   const [curBalance, setCurBalance] = useState({
     "ether": 0,
     "usdt": 0
   })
-  const [refresh, setRefresh] = useState(false)
   const [open, setOpen] = useState(false)
   const [curDeposit, setCurDeposit] = useState(0)
 
@@ -27,14 +27,10 @@ const LeftContainer = () => {
   }
 
   useEffect(() => {
-    if(balance != undefined) {
-      setCurBalance(balance)
-      setRefresh(!refresh)
-    }
     if(address) {
       const web3 = new Web3(SEPOLIA_RPC)
       createContract(web3, LendingPoolV2.abi, LENDING_CONTRACT_ADDRESS)
-        .then(contract => [
+        .then(contract => {
           contract.methods.supply(address).call()
             .then(res => {
               setCurDeposit(BigNumber(res).dividedBy(1000000000000000000).toFixed(2))
@@ -42,13 +38,37 @@ const LeftContainer = () => {
             .catch(err => {
               console.log(err)
             })
-        ])
+          let newBalance = {
+            ether: 0,
+            usdt: 0
+          }
+          web3.eth.getBalance(address)
+            .then((_balance) => {
+              newBalance.ether = web3.utils.fromWei(_balance, 'ether')
+              setCurBalance(newBalance)
+            })
+            .catch(err => {
+              console.log(err)
+            })
+
+          createContract(web3, StableToken.abi, USDT_CONTRACT_ADDRESS)
+            .then((contract) => {
+              contract.methods.balanceOf(address).call()
+                .then((receipt) => {
+                  newBalance.usdt = BigNumber(receipt).dividedBy(BASE_18).toFixed()
+                  setCurBalance(newBalance)
+                })
+                .catch(err => {
+                  console.log(err)
+                })
+            })
+        }) 
         .catch(err => {
           console.log(err)
         }) 
       }
     
-  }, [balance])
+  }, [balance, refresh])
 
   return (
     <Box mb={5}>
